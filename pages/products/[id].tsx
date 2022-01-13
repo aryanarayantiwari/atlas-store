@@ -18,7 +18,7 @@ const ProductDetails = () => {
     }
   } 
   useEffect(() => {
-    
+    doStuff()
   }, []);
 
   return (
