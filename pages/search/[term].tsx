@@ -9,20 +9,22 @@ import Products from "../../components/Products";
 export default function Home() {
   const { query } = useRouter()
     const [products, setProducts] = useState([]);
-  useEffect(async () => {
-    // add your Realm App Id to the .env.local file
+  const doStuff = async () => {
     if(query.term){
-    const REALM_APP_ID = process.env.NEXT_PUBLIC_REALM_APP_ID;
-    const app = new Realm.App({ id: REALM_APP_ID });
-    const credentials = Realm.Credentials.anonymous();
-    try {
-      const user = await app.logIn(credentials);
-      const searchProducts = await user.functions.searchProducts(query.term);
-      setProducts(searchProducts);
-    } catch (error) {
-      console.error(error);
+        const REALM_APP_ID = process.env.NEXT_PUBLIC_REALM_APP_ID;
+        const app = new Realm.App({ id: REALM_APP_ID || ""});
+        const credentials = Realm.Credentials.anonymous();
+        try {
+          const user = await app.logIn(credentials);
+          const searchProducts = await user.functions.searchProducts(query.term);
+          setProducts(searchProducts);
+        } catch (error) {
+          console.error(error);
+        }
     }
-}
+  }
+    useEffect(() => {
+    doStuff();
   }, [query]);
 
   return (

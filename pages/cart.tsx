@@ -5,7 +5,6 @@ import Link from "next/link";
 const cart = () => {
   const { isEmpty, totalUniqueItems, items, updateItemQuantity, removeItem, cartTotal } =
     useCart();
-
   if (isEmpty) {
     return (
       <>
@@ -75,14 +74,14 @@ const cart = () => {
                       <button
                           type="button"
                           className="font-medium h-5 w-5 text-white active:bg-indigo-600 bg-red-500 rounded-md  flex justify-center items-center ml-8 text-lg"
-                          onClick={() => (updateItemQuantity(item.id, item.quantity + 1))}
+                          onClick={() => (updateItemQuantity(item.id, item.quantity?item.quantity + 1:0))}
                         >
                           +
                         </button>
                         <button
                           type="button"
                           className="font-medium h-5 w-5 text-white active:bg-indigo-600 bg-red-500 rounded-md flex justify-center items-center ml-8 text-lg"
-                          onClick={() => (updateItemQuantity(item.id, item.quantity - 1))}
+                          onClick={() => (updateItemQuantity(item.id, item.quantity?item.quantity - 1:0))}
                         >
                           -
                         </button>

@@ -5,11 +5,9 @@ import Product from "../../components/Product";
 const ProductDetails = () => {
   const [product, setProduct] = useState();
   const { query } = useRouter();
-
-  useEffect(async () => {
-    // add your Realm App Id to the .env.local file
+  const doStuff = async () => {
     const REALM_APP_ID = process.env.NEXT_PUBLIC_REALM_APP_ID;
-    const app = new Realm.App({ id: REALM_APP_ID });
+    const app = new Realm.App({ id: REALM_APP_ID || ""});
     const credentials = Realm.Credentials.anonymous();
     try {
       const user = await app.logIn(credentials);
@@ -18,6 +16,9 @@ const ProductDetails = () => {
     } catch (error) {
       console.error(error);
     }
+  } 
+  useEffect(() => {
+    
   }, []);
 
   return (
