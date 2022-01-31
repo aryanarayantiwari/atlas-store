@@ -16,6 +16,6 @@
     "noImplicitAny": false,
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/cart.jsx", "pages/api/create-checkout-session.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/cart.jsx", "pages/api/create-checkout-session.tsx"],
   "exclude": ["node_modules"]
 }
