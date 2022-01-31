@@ -37,7 +37,6 @@ const Product = ({ product }) => {
                 ${product.price}
               </span>
             <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-1 sm:grid-cols-2 items-center">
-            {/* <p className="text-left font-semibold">Quantity</p> */}
             <div className="flex justify-around items-center">
                 <h4 className="font-semibold">Size</h4>
                 <div 
