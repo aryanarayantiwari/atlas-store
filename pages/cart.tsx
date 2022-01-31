@@ -1,10 +1,27 @@
 import React from "react";
 import { useCart } from "react-use-cart";
-import { ShoppingBagIcon,SearchIcon, ShoppingCartIcon } from "@heroicons/react/solid";
+import { ShoppingBagIcon, ShoppingCartIcon } from "@heroicons/react/solid";
+import axios from "axios";
+import { loadStripe } from "@stripe/stripe-js";
+const stripePromise = loadStripe(process.env.stripe_public_key!);
 import Link from "next/link";
 const cart = () => {
   const { isEmpty, totalUniqueItems, items, updateItemQuantity, removeItem, cartTotal } =
     useCart();
+    const createCheckOutSession = async () => {
+      const stripe = await stripePromise;
+      const checkoutSession = await axios.post('/api/create-checkout-session', {
+        items: items,
+        email: "test@gmail.com",
+      });
+      const result = await stripe!.redirectToCheckout({
+        sessionId: checkoutSession.data.id,
+      });
+  
+      if (result.error) {
+        alert(result.error.message);
+      }
+    };
   if (isEmpty) {
     return (
       <>
@@ -73,6 +90,7 @@ const cart = () => {
                       <div className="flex justify-between items-center">
                       <button
                           type="button"
+                          role='link'
                           className="font-medium h-5 w-5 text-white active:bg-indigo-600 bg-red-500 rounded-md  flex justify-center items-center ml-8 text-lg"
                           onClick={() => (updateItemQuantity(item.id, item.quantity?item.quantity + 1:0))}
                         >
@@ -102,7 +120,15 @@ const cart = () => {
         </div>
         <div className="flex flex-col space-y-5 justify-center items-center">
         <div className="text-gray-900 font-semibold text-xl">Total = ${cartTotal}</div>
-        <button type="button" className="w-40 bg-gray-900 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-gray-500"><span>Pay ${cartTotal}</span></button>
+        <button type="button" className="w-40 mb-4 bg-gray-900 border border-transparent rounded-md py-3 px-8 flex 
+        items-center justify-center text-base font-medium text-white hover:bg-gray-700 focus:outline-none 
+        focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-gray-500"
+        onClick={createCheckOutSession}
+        >
+          <span>
+            Pay ${cartTotal}
+          </span>
+        </button>
         </div>
       </div>
     );
